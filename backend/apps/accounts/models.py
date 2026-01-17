@@ -8,5 +8,7 @@ class User(AbstractUser):
     # We can keep username/email/first_name/last_name from AbstractUser
     # Add any other fields if necessary, currently sticking to basics
     
+    storage_quota_gb = models.IntegerField(default=10)
+
     def __str__(self):
         return self.username

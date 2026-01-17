@@ -6,3 +6,7 @@ python-dotenv
 django-cors-headers
 gunicorn
 
+pyicloud
+google-auth-oauthlib
+requests
+Pillow

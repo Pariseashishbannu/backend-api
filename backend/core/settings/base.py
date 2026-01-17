@@ -35,6 +35,9 @@ INSTALLED_APPS = [
     'apps.accounts',
     'apps.files',
     'apps.portfolio',
+    'apps.audit',
+    'apps.secrets',
+    'apps.integrations',
 ]
 
 MIDDLEWARE = [
@@ -46,6 +49,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'apps.audit.middleware.AuditMiddleware',
 ]
 
 ROOT_URLCONF = 'core.urls'
