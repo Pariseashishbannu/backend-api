@@ -23,7 +23,7 @@ def run_debug():
         elif resp.status_code == 400 and ('username' in resp.text or 'already exists' in resp.text):
             print("User already exists, proceeding to login.")
         else:
-            print(f"Registration failed: {resp.status_code} {resp.text}")
+            print(f"Registration failed: {resp.status_code} {resp.text[:200]}")
             # Try login anyway
     except Exception as e:
         print(f"Connection failed: {e}")
@@ -58,7 +58,7 @@ def run_debug():
     try:
         resp = requests.post(f"{BASE_URL}/files/", headers=headers, files=files, data=data)
         print(f"Upload Response Status: {resp.status_code}")
-        print(f"Upload Response Body: {resp.text}")
+        print(f"Upload Response Body: {resp.text[:200]}")
     except Exception as e:
         print(f"Request failed: {e}")
     finally:

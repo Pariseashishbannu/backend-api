@@ -110,7 +110,7 @@ class FileListCreateView(generics.ListCreateAPIView):
             metadata = {}
 
         # Check for existing file collision
-        from .models import FileVersion, File
+        from .models import FileVersion
         from django.core.files.base import ContentFile
         
         parent_uuid = parent_id if parent_id and parent_id != 'root' else None

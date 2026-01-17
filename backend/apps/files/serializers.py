@@ -23,6 +23,10 @@ class FileSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'size', 'mime_type', 'created_at', 'updated_at', 'file',
                   'parent', 'is_folder', 'is_favorite', 'category', 'metadata', 'tags', 'file_type', 'thumbnail', 'versions']
         read_only_fields = ['id', 'created_at', 'updated_at', 'size', 'mime_type']
+        extra_kwargs = {
+            'name': {'required': False},
+            'file': {'required': False},
+        }
 
     def get_tags(self, obj):
         # Simple list of tag objects or names
