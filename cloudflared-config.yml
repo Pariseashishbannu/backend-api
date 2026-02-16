@@ -1,0 +1,13 @@
+# Cloudflare Tunnel Configuration
+# This config routes traffic through the Cloudflare tunnel to your backend
+
+tunnel: backend-api
+credentials-file: /home/nonroot/.cloudflared/cert.pem
+
+ingress:
+  # Route api.pariseashish.com to backend web service
+  - hostname: api.pariseashish.com
+    service: http://web:8000
+  
+  # Catch-all
+  - service: http://web:8000
