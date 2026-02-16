@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=backenddb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    healthcheck:
+        test: ["CMD-SHELL", "pg_isready -U postgres"]
+        interval: 5s
+        timeout: 5s
+        retries: 5
+
+  web:
+    build: .
+    restart: always
+    volumes:
+      - static_volume:/app/staticfiles
+      - media_volume:/data/media
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - DB_NAME=postgres
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DJANGO_SETTINGS_MODULE=core.settings.prod
+      - DJANGO_SECRET_KEY=unsafe-development-key-change-in-prod
+      - DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,api.pariseashish.com,npm.pariseashish.com
+      - CORS_ALLOWED_ORIGINS=https://npm.pariseashish.com,https://pariseashish.com
+      - CSRF_TRUSTED_ORIGINS=https://api.pariseashish.com,https://npm.pariseashish.com,http://localhost:8000
+      - DJANGO_SECURE_SSL_REDIRECT=False
+
+  cloudflare:
+    image: cloudflare/cloudflared:latest
+    restart: always
+    command: tunnel run
+    volumes:
+      - ./cloudflared-config.yml:/etc/cloudflared/config.yml
+    environment:
+      - CLOUDFLARE_TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
+    depends_on:
+      - web
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:
